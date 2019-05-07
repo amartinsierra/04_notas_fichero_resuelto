@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import beans.Resultado;
 import modelo.GestionNotas;
@@ -20,12 +21,13 @@ public class CalculosActivity extends Activity {
     GestionNotas gnotas;
     ArrayAdapter<Double> adpNotas;
     ListView lvNotas;
+    List<Double> notas;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculos);
         gnotas=new GestionNotas(this);
-
+        notas=gnotas.recupuerarNotas();
         TextView tvMedia=this.findViewById(R.id.tvMedia);
         TextView tvAprobados=this.findViewById(R.id.tvAprobados);
         //llama a los métodos que hacen los cálculos y muestra
@@ -36,14 +38,14 @@ public class CalculosActivity extends Activity {
 
         //volcamos las notas en ListView
         lvNotas=this.findViewById(R.id.lvNotas);
-        adpNotas=new ArrayAdapter<Double>(this,android.R.layout.simple_list_item_1,gnotas.recupuerarNotas());
+        adpNotas=new ArrayAdapter<Double>(this,android.R.layout.simple_list_item_1,notas);
         lvNotas.setAdapter(adpNotas);
 
         lvNotas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                gnotas.recupuerarNotas().remove(i);
-                adpNotas=new ArrayAdapter<Double>(CalculosActivity.this,android.R.layout.simple_list_item_1,gnotas.recupuerarNotas());
+                notas.remove(i);
+                adpNotas=new ArrayAdapter<Double>(CalculosActivity.this,android.R.layout.simple_list_item_1,notas);
                 lvNotas.setAdapter(adpNotas);
             }
         });
